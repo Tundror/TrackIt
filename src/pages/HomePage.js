@@ -1,4 +1,4 @@
-import logo from "./assets/logo.png"
+import logo from "../assets/logo.png"
 import styled from "styled-components"
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react"
@@ -22,7 +22,7 @@ export default function HomePage() {
                     <LoginButton>Entrar</LoginButton>
                 </FormContainer>
             </form>
-            <Cadastrar>Não tem uma conta? Cadastre-se!</Cadastrar>
+            <Link to="/cadastro" ><Cadastrar>Não tem uma conta? Cadastre-se!</Cadastrar></Link>
         </PageContainer>
     )
 }
