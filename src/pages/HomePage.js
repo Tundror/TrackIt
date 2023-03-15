@@ -92,3 +92,4 @@ const Cadastrar = styled.p`
     color: #52B6FF;
     margin-top:25px;
 `
+
