@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage"
 import SignUpPage from "./pages/SIgnUpPage";
 import HabitsPage from "./pages/HabitsPage";
+import TodayPage from "./pages/TodayPage";
+import HistoryPage from "./pages/HistoryPage";
 
 function App() {
   return (
@@ -14,7 +16,9 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/cadastro" element={<SignUpPage />} />
-        <Route path="/habitos" element={<HabitsPage />} />  
+        <Route path="/habitos" element={<HabitsPage />} />
+        <Route path="/hoje" element={<TodayPage />} />
+        <Route path="/historico" element={<HistoryPage />} />
       </Routes>
     </BrowserRouter>
   );

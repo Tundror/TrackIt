@@ -5,8 +5,8 @@ import axios from 'axios';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-export default function HabitsPage() {
-    const percentage = 66
+export default function HistoryPage() {
+    const percentage=66
     return (
         <>
             <PageContainer>
@@ -17,39 +17,11 @@ export default function HabitsPage() {
                     <Avatar src="https://almeidajunior-prod1.s3.amazonaws.com/prod/uploads/news/5d81505ac6770.jpg" />
                 </NavContainer>
                 <HabitsHeaderContainer>
-                    <MeusHabitos>Meus hábitos</MeusHabitos>
-                    <AddHabitButton>+</AddHabitButton>
+                    <MeusHabitos>Histórico</MeusHabitos>
+                    <HabitsConcluded>Em breve você poderá ver o histórico dos seus hábitos aqui!</HabitsConcluded>
                 </HabitsHeaderContainer>
-                <AddHabitContainer>
-                    <InputLogin type="text" placeholder="nome do hábito" />
-                    <WeekdayContainer>
-                        <WeekdayDiv>D</WeekdayDiv>
-                        <WeekdayDiv>S</WeekdayDiv>
-                        <WeekdayDiv>T</WeekdayDiv>
-                        <WeekdayDiv>Q</WeekdayDiv>
-                        <WeekdayDiv>Q</WeekdayDiv>
-                        <WeekdayDiv>S</WeekdayDiv>
-                        <WeekdayDiv>S</WeekdayDiv>
-                    </WeekdayContainer>
-                    <CancelButton>Cancelar</CancelButton>
-                    <SaveButton>Salvar</SaveButton>
-                </AddHabitContainer>
-                <HabitsContainer>
-                    <HabitName>Ler 1 capítulo de livro</HabitName>
-                    <WeekdayContainer>
-                        <WeekdayDiv>D</WeekdayDiv>
-                        <WeekdayDiv>S</WeekdayDiv>
-                        <WeekdayDiv>T</WeekdayDiv>
-                        <WeekdayDiv>Q</WeekdayDiv>
-                        <WeekdayDiv>Q</WeekdayDiv>
-                        <WeekdayDiv>S</WeekdayDiv>
-                        <WeekdayDiv>S</WeekdayDiv>
-                    </WeekdayContainer>
-                    <TrashContainer><ion-icon size="small" name="trash-outline"></ion-icon></TrashContainer>
-                </HabitsContainer>
-                <NoHabitsContainer>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</NoHabitsContainer>
                 <ProgressBarContainer>
-                <Link to="/hoje"><CircularProgressbar
+                    <Link to="/hoje" ><CircularProgressbar
                         value={percentage}
                         text="Hoje"
                         background
@@ -63,10 +35,9 @@ export default function HabitsPage() {
                     /></Link>
                 </ProgressBarContainer>
                 <FooterContainer>
-                    <Habitos>Hábitos</Habitos>
-                    <Link to="/historico" ><Historico>Histórico</Historico></Link>
+                    <Link to="/habitos" ><Habitos>Hábitos</Habitos></Link>
+                    <Historico>Histórico</Historico>
                 </FooterContainer>
-
             </PageContainer>
         </>
     )
@@ -79,8 +50,8 @@ const PageContainer = styled.div`
     font-size: 24px;
     text-align: center;
     color: #293845;
-    padding-top: 92px;
     padding-bottom: 120px;
+    padding-top: 92px;
     background: #F2F2F2;
     width:100%;
     height:100%;
@@ -100,11 +71,11 @@ const NavContainer = styled.div`
     position: fixed;
     z-index:2;
     top: 0;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
     a {
         text-decoration: none;
         color: #E8833A;
     }
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
 `
 const Avatar = styled.img`
     width: 51px;
@@ -114,10 +85,11 @@ const Avatar = styled.img`
 `
 const HabitsHeaderContainer = styled.div`
     display:flex;
-    justify-content:space-between;
-    align-items:center;
+    justify-content:left;
+    flex-direction:column;
     width:100%;
-    margin-bottom:20px;
+    margin-bottom:18px;
+    text-align:left;
 `
 const MeusHabitos = styled.p`
     font-family: 'Lexend Deca';
@@ -128,147 +100,16 @@ const MeusHabitos = styled.p`
     color: #126BA5;
     margin-left:18px;
 `
-const AddHabitButton = styled.button`
-    width: 40px;
-    height: 35px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background: #52B6FF;
-    border-radius: 4.63636px;
-    font-family: 'Lexend Deca';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 26.976px;
-    line-height: 34px;
-    text-align:center;
-    padding-bottom:4px;
-    margin-right:18px;
-`
 
-const AddHabitContainer = styled.div`
-    width: 340px;
-    min-width:340px;
-    height: 180px;
-    background: #FFFFFF;
-    border-radius: 5px;
-    display:flex;
-    flex-direction:column;
-    position:relative;
-`
-
-const InputLogin = styled.input`
-    width: 283px;
-    height: 45px;
-    background: #FFFFFF;
-    border: 1px solid #D5D5D5;
-    border-radius: 5px;
-    margin-top:18px;
-    margin-left:19px;
-    margin-bottom:8px;
-    ::placeholder{
-        color:#DBDBDB;
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 19.976px;
-        line-height: 25px;
-    }
-`
-
-const HabitsContainer = styled.div`
-    width: 340px;
-    min-width:340px;
-    height: 91px;
-    background: #FFFFFF;
-    border-radius: 5px;
-    display:flex;
-    flex-direction:column;
-    position:relative;
-    margin-top:10px;
-    text-align:left;
-`
-
-const HabitName = styled.p`
-    font-family: 'Lexend Deca';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 19.976px;
-    line-height: 25px;
-    color: #666666;
-    margin-left:19px;
-    margin-top:13px;
-    margin-bottom:8px
-`
-
-const WeekdayContainer = styled.div`
-    display:flex;
-    gap:4px;
-    margin-left:19px;
-    text-align:center;
-`
-const TrashContainer = styled.div`
-    position:absolute;
-    right:10px;
-    top:11px;
-`
-
-const WeekdayDiv = styled.div`
-    width: 30px;
-    height: 30px;
-    background: #FFFFFF;
-    border: 1px solid #D5D5D5;
-    border-radius: 5px;
-    color:#DBDBDB;
-    font-family: 'Lexend Deca';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 19.976px;
-    line-height: 25px;
-    padding-top:4px;
-`
-
-const CancelButton = styled.button`
-    font-family: 'Lexend Deca';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 15.976px;
-    line-height: 20px;
-    color: #52B6FF;
-    position:absolute;
-    right:123px;
-    bottom:23px;
-    width:69px;
-    height:20px;
-    background: #FFFFFF;
-`
-const SaveButton = styled.button`
-    width: 84px;
-    height: 35px;
-    background: #52B6FF;
-    border-radius: 4.63636px;
-    color: #FFFFFF;
-    font-family: 'Lexend Deca';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 15.976px;
-    line-height: 20px;
-    text-align: center;
-    position:absolute;
-    right:16px;
-    bottom:15px;
-`
-const NoHabitsContainer = styled.div`
-    width: 338px;
-    height: 74px;
+const HabitsConcluded = styled.p`
     font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;
     font-size: 17.976px;
     line-height: 22px;
     color: #666666;
-    text-align:left;
-    margin-top:29px;
+    margin-left:18px;
+    margin-top:17px;
 `
 const ProgressBarContainer = styled.div`
     width: 91px;
