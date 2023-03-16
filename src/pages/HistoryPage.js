@@ -21,7 +21,7 @@ export default function HistoryPage() {
                     <HabitsConcluded>Em breve você poderá ver o histórico dos seus hábitos aqui!</HabitsConcluded>
                 </HabitsHeaderContainer>
                 <ProgressBarContainer>
-                    <Link to="/hoje" ><CircularProgressbar
+                    <Link to="/hoje"><CircularProgressbar
                         value={percentage}
                         text="Hoje"
                         background
