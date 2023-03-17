@@ -6,6 +6,9 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { UserContext } from "../contexts/userContext";
 import dayjs from "dayjs";
+import { confirmAlert } from 'react-confirm-alert'
+import 'react-confirm-alert/src/react-confirm-alert.css'
+import { ThreeDots } from 'react-loader-spinner'
 
 export default function HabitsPage() {
     const percentage = 66
@@ -16,6 +19,7 @@ export default function HabitsPage() {
     const [selectedDays, setSelectedDays] = useState([])
     const [form, setForm] = useState("")
     const [listaHabitos, setListaHabitos] = useState([])
+    const [isDisabled, setisDisabled] = useState(false)
 
     useEffect(() => {
         const config = {
@@ -43,12 +47,19 @@ export default function HabitsPage() {
         const newForm = { name: form, days: selectedDays }
         console.log("config", config)
         const promise = axios.post(url, newForm, config)
-        promise.then((a) => console.log(a.data))
-        promise.catch((a) => console.log(a.response.data))
-        const promise2 = axios.get(url, config)
-        promise2.then((a) => setListaHabitos(a.data))
-        promise2.catch((a) => console.log("erro", a.response.data))
-        setIsCreatingHabit(false)
+        setisDisabled(true)
+        promise.then((a) => {
+            console.log(a.data)
+            setisDisabled(false)
+            const promise2 = axios.get(url, config)
+            promise2.then((a) => setListaHabitos(a.data))
+            promise2.catch((a) => alert("erro", a.response.data.message))
+            setIsCreatingHabit(false)
+        })
+        promise.catch((a) => {
+            setisDisabled(false)
+            console.log(a.response.data)
+        })   
     }
     return (
         <>
@@ -66,16 +77,23 @@ export default function HabitsPage() {
                 {isCreatingHabit ? <AddHabitContainer data-test="habit-create-container">
                     <InputLogin data-test="habit-name-input" onChange={chooseName} type="text" placeholder="nome do hábito" />
                     <WeekdayContainer>
-                        {weekdays.map((a) => <DisplayWeekdays selectedDays={selectedDays} setSelectedDays={setSelectedDays} key={a} day={a} />)}
+                        {weekdays.map((a) => <DisplayWeekdays isDisabled={isDisabled} selectedDays={selectedDays} setSelectedDays={setSelectedDays} key={a} day={a} />)}
                     </WeekdayContainer>
-                    <CancelButton data-test="habit-create-cancel-btn" onClick={cancelCreateHabit}>Cancelar</CancelButton>
-                    <SaveButton data-test="habit-create-save-btn" onClick={saveHabit}>Salvar</SaveButton>
+                    <CancelButton isDisabled={isDisabled} disabled={isDisabled} data-test="habit-create-cancel-btn" onClick={cancelCreateHabit}>Cancelar</CancelButton>
+                    <SaveButton isDisabled={isDisabled} disabled={isDisabled} data-test="habit-create-save-btn" onClick={saveHabit}>{isDisabled ? <ThreeDots
+                        height="80"
+                        width="80"
+                        radius="9"
+                        color='white'
+                        ariaLabel='three-dots-loading'
+                        wrapperStyle={{}}
+                        wrapperClassName=""
+                        visible={true}
+                    /> : "Salvar"}</SaveButton>
                 </AddHabitContainer>
                     :
                     <></>}
-
-
-                {listaHabitos.map((a) => <DisplayHabits listaHabitos={listaHabitos} setListaHabitos={setListaHabitos} days={a.days} id={a.id} name={a.name} key={a.id} weekdays={weekdays} selectedDays={selectedDays} setSelectedDays={setSelectedDays} />)}
+                {listaHabitos.map((a) => <DisplayHabits token={token} listaHabitos={listaHabitos} setListaHabitos={setListaHabitos} days={a.days} id={a.id} name={a.name} key={a.id} weekdays={weekdays} selectedDays={selectedDays} setSelectedDays={setSelectedDays} />)}
                 {listaHabitos.length > 0 ? <></> : <NoHabitsContainer>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</NoHabitsContainer>}
                 <ProgressBarContainer>
                     <Link data-test="today-link" to="/hoje"><CircularProgressbar
@@ -127,14 +145,39 @@ function DisplayWeekdays(props) {
         }
     }
     return (
-        <WeekdayDiv data-test="habit-day" isSelected={isSelected} onClick={selectDay}>{decideDay()}</WeekdayDiv>
+        <WeekdayDiv disabled={props.isDisabled} data-test="habit-day" isSelected={isSelected} onClick={selectDay}>{decideDay()}</WeekdayDiv>
     )
 }
 function DisplayHabits(props) {
-    function removeHabit(){
-        const array = props.listaHabitos
-        props.setListaHabitos(array.filter(id => id !== props.id))
-        console.log("hello")
+    function removeHabit() {
+        confirmAlert({
+            title: 'Confirm to submit',
+            message: 'Tem certeza que deseja excluir este habito?',
+            buttons: [
+                {
+                    label: 'Sim',
+                    onClick: () => {
+                        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+                        const array = props.listaHabitos
+                        const config = {
+                            headers: { Authorization: `Bearer ${props.token}` }
+                        }
+                        const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${props.id}`, config)
+                        promise.then(() => {
+                            const promise2 = axios.get(url, config)
+                            promise2.then((a) => props.setListaHabitos(a.data))
+                            promise2.catch((a) => alert("erro", a.response.data.message))
+                        })
+                        promise.catch((a) => alert("erro", a.response.data.message))
+
+                    }
+                },
+                {
+                    label: 'Nao',
+                }
+            ]
+        });
+
     }
     return (
         <HabitsContainer data-test="habit-container">
@@ -305,7 +348,7 @@ const TrashContainer = styled.div`
     right:10px;
     top:11px;
 `
-const WeekdayDivStatic = styled.div`
+const WeekdayDivStatic = styled.button`
     width: 30px;
     height: 30px;
     background: ${props => props.days.includes(props.day) ? "#CFCFCF" : "#FFFFFF"};
@@ -317,9 +360,8 @@ const WeekdayDivStatic = styled.div`
     font-weight: 400;
     font-size: 19.976px;
     line-height: 25px;
-    padding-top:4px;
 `
-const WeekdayDiv = styled.div`
+const WeekdayDiv = styled.button`
     width: 30px;
     height: 30px;
     background: ${props => props.isSelected ? "#CFCFCF" : "#FFFFFF"};
@@ -331,7 +373,7 @@ const WeekdayDiv = styled.div`
     font-weight: 400;
     font-size: 19.976px;
     line-height: 25px;
-    padding-top:4px;
+    
 `
 
 const CancelButton = styled.button`
@@ -347,6 +389,10 @@ const CancelButton = styled.button`
     width:69px;
     height:20px;
     background: #FFFFFF;
+    &:disabled{
+        background-color:#FFFFFF;
+        opacity:0.7;
+    }
 `
 const SaveButton = styled.button`
     width: 84px;
@@ -363,6 +409,10 @@ const SaveButton = styled.button`
     position:absolute;
     right:16px;
     bottom:15px;
+    &:disabled{
+        background-color:#52B6FF;
+        opacity:0.7;
+    }
 `
 const NoHabitsContainer = styled.div`
     width: 338px;

@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
 		justify-content: center;
 		text-align: center;
 		color: #FFFFFF;
-		padding: 0 20px;
+		padding: 0;
 		&:disabled {
 			background-color: lightgray;
 		}
