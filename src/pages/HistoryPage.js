@@ -6,7 +6,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 export default function HistoryPage() {
-    const percentage=66
+    const percentage = 66
     return (
         <>
             <PageContainer>
@@ -20,24 +20,26 @@ export default function HistoryPage() {
                     <MeusHabitos>Histórico</MeusHabitos>
                     <HabitsConcluded>Em breve você poderá ver o histórico dos seus hábitos aqui!</HabitsConcluded>
                 </HabitsHeaderContainer>
-                <ProgressBarContainer>
-                    <Link data-test="today-link" to="/hoje"><CircularProgressbar
-                        value={percentage}
-                        text="Hoje"
-                        background
-                        backgroundPadding={6}
-                        styles={buildStyles({
-                            backgroundColor: "#52B6FF",
-                            textColor: "#fff",
-                            pathColor: "#fff",
-                            trailColor: "transparent"
-                        })}
-                    /></Link>
-                </ProgressBarContainer>
-                <FooterContainer data-test="menu">
-                    <Link data-test="habit-link" to="/habitos" ><Habitos>Hábitos</Habitos></Link>
-                    <Historico>Histórico</Historico>
-                </FooterContainer>
+                <BottomContainer>
+                    <FooterContainer data-test="menu">
+                        <Link data-test="habit-link" to="/habitos" ><Habitos>Hábitos</Habitos></Link>
+                        <ProgressBarContainer>
+                            <Link data-test="today-link" to="/hoje"><CircularProgressbar
+                                value={percentage}
+                                text="Hoje"
+                                background
+                                backgroundPadding={6}
+                                styles={buildStyles({
+                                    backgroundColor: "#52B6FF",
+                                    textColor: "#fff",
+                                    pathColor: "#fff",
+                                    trailColor: "transparent"
+                                })}
+                            /></Link>
+                        </ProgressBarContainer>
+                        <Historico>Histórico</Historico>
+                    </FooterContainer>
+                </BottomContainer>
             </PageContainer>
         </>
     )
@@ -114,12 +116,16 @@ const HabitsConcluded = styled.p`
 const ProgressBarContainer = styled.div`
     width: 91px;
     height: 91px;
-    position:fixed;
-    bottom: 10px;
-    left:auto;
     z-index:3;
+    margin-bottom:40px;
 `
-
+const BottomContainer = styled.div`
+    position: fixed;
+    z-index:2;
+    bottom: 0;
+    width: 100%;
+    height: 70px;
+`
 const FooterContainer = styled.div`
     width: 100%;
     height: 70px;
@@ -127,9 +133,7 @@ const FooterContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     background: #FFFFFF;
-    position: fixed;
-    z-index:2;
-    bottom: 0;
+    position:relative;
     font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;

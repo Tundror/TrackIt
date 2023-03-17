@@ -57,9 +57,9 @@ export default function HabitsPage() {
         promise.catch((a) => {
             setisDisabled(false)
             console.log(a.response.data)
-        })   
+        })
     }
-    function handleInputChange(event){
+    function handleInputChange(event) {
         setInputValue(event.target.value)
     }
     return (
@@ -96,24 +96,26 @@ export default function HabitsPage() {
                     <></>}
                 {listaHabitos.map((a) => <DisplayHabits token={token} listaHabitos={listaHabitos} setListaHabitos={setListaHabitos} days={a.days} id={a.id} name={a.name} key={a.id} weekdays={weekdays} selectedDays={selectedDays} setSelectedDays={setSelectedDays} />)}
                 {listaHabitos.length > 0 ? <></> : <NoHabitsContainer>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</NoHabitsContainer>}
-                <ProgressBarContainer>
-                    <Link data-test="today-link" to="/hoje"><CircularProgressbar
-                        value={percentage}
-                        text="Hoje"
-                        background
-                        backgroundPadding={6}
-                        styles={buildStyles({
-                            backgroundColor: "#52B6FF",
-                            textColor: "#fff",
-                            pathColor: "#fff",
-                            trailColor: "transparent"
-                        })}
-                    /></Link>
-                </ProgressBarContainer>
-                <FooterContainer data-test="menu">
-                    <Habitos>Hábitos</Habitos>
-                    <Link data-test="history-link" to="/historico" ><Historico>Histórico</Historico></Link>
-                </FooterContainer>
+                <BottomContainer>
+                    <FooterContainer data-test="menu">
+                        <Habitos>Hábitos</Habitos>
+                        <ProgressBarContainer>
+                            <Link data-test="today-link" to="/hoje"><CircularProgressbar
+                                value={percentage}
+                                text="Hoje"
+                                background
+                                backgroundPadding={6}
+                                styles={buildStyles({
+                                    backgroundColor: "#52B6FF",
+                                    textColor: "#fff",
+                                    pathColor: "#fff",
+                                    trailColor: "transparent"
+                                })}
+                            /></Link>
+                        </ProgressBarContainer>
+                        <Link data-test="history-link" to="/historico" ><Historico>Histórico</Historico></Link>
+                    </FooterContainer>
+                </BottomContainer>
 
             </PageContainer>
         </>
@@ -430,10 +432,15 @@ const NoHabitsContainer = styled.div`
 const ProgressBarContainer = styled.div`
     width: 91px;
     height: 91px;
-    position:fixed;
-    bottom: 10px;
-    left:auto;
     z-index:3;
+    margin-bottom:40px;
+`
+const BottomContainer = styled.div`
+    position: fixed;
+    z-index:2;
+    bottom: 0;
+    width: 100%;
+    height: 70px;
 `
 
 const FooterContainer = styled.div`
@@ -443,9 +450,7 @@ const FooterContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     background: #FFFFFF;
-    position: fixed;
-    z-index:2;
-    bottom: 0;
+    position:relative;
     font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;

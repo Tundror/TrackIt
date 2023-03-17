@@ -8,9 +8,9 @@ import { UserContext } from "../contexts/userContext";
 
 export default function TodayPage() {
     const percentage = 66
-    
-    const {token, userImage} = useContext(UserContext)
-    
+
+    const { token, userImage } = useContext(UserContext)
+
     return (
         <>
             <PageContainer>
@@ -32,24 +32,26 @@ export default function TodayPage() {
                     </SequenceRecordContainer>
                     <CheckContainer data-test="today-habit-check-btn"><ion-icon name="checkbox"></ion-icon></CheckContainer>
                 </HabitsContainer>
-                <ProgressBarContainer>
-                    <CircularProgressbar
-                        value={percentage}
-                        text="Hoje"
-                        background
-                        backgroundPadding={6}
-                        styles={buildStyles({
-                            backgroundColor: "#52B6FF",
-                            textColor: "#fff",
-                            pathColor: "#fff",
-                            trailColor: "transparent"
-                        })}
-                    />
-                </ProgressBarContainer>
-                <FooterContainer data-test="menu">
-                    <Link data-test="habit-link" to="/habitos" ><Habitos>Hábitos</Habitos></Link>
-                    <Link data-test="history-link" to="/historico" ><Historico>Histórico</Historico></Link>
-                </FooterContainer>
+                <BottomContainer>
+                    <FooterContainer data-test="menu">
+                        <Link data-test="habit-link" to="/habitos" ><Habitos>Hábitos</Habitos></Link>
+                        <ProgressBarContainer>
+                            <CircularProgressbar
+                                value={percentage}
+                                text="Hoje"
+                                background
+                                backgroundPadding={6}
+                                styles={buildStyles({
+                                    backgroundColor: "#52B6FF",
+                                    textColor: "#fff",
+                                    pathColor: "#fff",
+                                    trailColor: "transparent"
+                                })}
+                            />
+                        </ProgressBarContainer>
+                        <Link data-test="history-link" to="/historico" ><Historico>Histórico</Historico></Link>
+                    </FooterContainer>
+                </BottomContainer>
             </PageContainer>
         </>
     )
@@ -164,10 +166,15 @@ const CheckContainer = styled.div`
 const ProgressBarContainer = styled.div`
     width: 91px;
     height: 91px;
-    position:fixed;
-    bottom: 10px;
-    left:auto;
     z-index:3;
+    margin-bottom:40px;
+`
+const BottomContainer = styled.div`
+    position: fixed;
+    z-index:2;
+    bottom: 0;
+    width: 100%;
+    height: 70px;
 `
 
 const FooterContainer = styled.div`
@@ -177,9 +184,7 @@ const FooterContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     background: #FFFFFF;
-    position: fixed;
-    z-index:2;
-    bottom: 0;
+    position:relative;
     font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;
