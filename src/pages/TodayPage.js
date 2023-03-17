@@ -5,12 +5,35 @@ import axios from 'axios';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { UserContext } from "../contexts/userContext";
+import dayjs from "dayjs";
 
 export default function TodayPage() {
     const percentage = 66
+    const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
+    const [listaHabitos, setListaHabitos] = useState([])
 
     const { token, userImage } = useContext(UserContext)
 
+    function whatDayWeek() {
+        switch (dayjs().day()) {
+            case 0: return "Domingo"
+            case 1: return "Segunda"
+            case 2: return "Terca"
+            case 3: return "Quarta"
+            case 4: return "Quinta"
+            case 5: return "Sexta"
+            case 6: return "Sabado"
+        }
+    }
+    useEffect(() => {
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        }
+        axios
+            .get(url, config)
+            .then((a) => setListaHabitos(a.data))
+            .catch((a) => console.log(a.response.data.message))
+    }, [])
     return (
         <>
             <PageContainer>
@@ -21,17 +44,20 @@ export default function TodayPage() {
                     <Avatar src={userImage} />
                 </NavContainer>
                 <HabitsHeaderContainer>
-                    <MeusHabitos data-test="today">Segunda, 17/05</MeusHabitos>
+                    <MeusHabitos data-test="today">
+                        {whatDayWeek()}, {dayjs().date()}/{(dayjs().month() + 1) < 10 ? "0" : ""}{dayjs().month() + 1}
+                    </MeusHabitos>
                     <HabitsConcluded data-test="today-counter">Nenhum hábito concluído ainda</HabitsConcluded>
                 </HabitsHeaderContainer>
-                <HabitsContainer data-test="today-habit-container">
-                    <HabitName data-test="today-habit-name">Ler 1 capítulo de livro</HabitName>
-                    <SequenceRecordContainer>
-                        <p data-test="today-habit-sequence">Sequência atual: 3 dias</p>
-                        <p data-test="today-habit-record">Seu recorde: 5 dias</p>
-                    </SequenceRecordContainer>
-                    <CheckContainer data-test="today-habit-check-btn"><ion-icon name="checkbox"></ion-icon></CheckContainer>
-                </HabitsContainer>
+                {listaHabitos.map((a) => <DisplayHabits
+                    key={a.id}
+                    id={a.id}
+                    name={a.name}
+                    done={a.done}
+                    currentSequence={a.currentSequence}
+                    highestSequence={a.highestSequence}
+                    token={token}
+                    setListaHabitos={setListaHabitos} />)}
                 <BottomContainer>
                     <FooterContainer data-test="menu">
                         <Link data-test="habit-link" to="/habitos" ><Habitos>Hábitos</Habitos></Link>
@@ -57,6 +83,56 @@ export default function TodayPage() {
     )
 }
 
+function DisplayHabits(props) {
+    const [isChecked, setIsChecked] = useState(false)
+    function checkHabit() {
+        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
+        const urlCheck = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${props.id}/check`
+        const urlUncheck = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${props.id}/uncheck`
+        const config = {
+            headers: { Authorization: `Bearer ${props.token}` }
+        }
+        if (props.done === true) {
+            
+            axios
+                .post(urlCheck, config)
+                .then(() => {
+                    setIsChecked(true)
+                    axios
+                        .get(url, config)
+                        .then((a) => props.setListaHabitos(a.data))
+                        .catch((a) => console.log(a.response.data.message))
+                })
+                .catch((a) => alert(a.response.data.message))
+        }
+        else {
+            
+            
+            axios
+                .post(urlUncheck, config)
+                .then(() => {
+                    setIsChecked(false)
+                    axios
+                        .get(url, config)
+                        .then((a) => props.setListaHabitos(a.data))
+                        .catch((a) => console.log(a.response.data.message))
+                })
+                .catch((a) => alert(a.response.data.message))
+        }
+
+    }
+    return (
+        <HabitsContainer data-test="today-habit-container">
+            <HabitName data-test="today-habit-name">{props.name}</HabitName>
+            <SequenceRecordContainer>
+                <ActualSequence done={props.done} data-test="today-habit-sequence">Sequência atual: {props.currentSequence} dia{props.currentSequence === 1 ? "" : "s"}</ActualSequence>
+                <HighestSequence currentSequence={props.currentSequence} highestSequence={props.highestSequence} data-test="today-habit-record">Seu recorde: {props.highestSequence} dia{props.highestSequence === 1 ? "" : "s"}</HighestSequence>
+            </SequenceRecordContainer>
+            <CheckContainer onClick={checkHabit} isChecked={isChecked} data-test="today-habit-check-btn"><ion-icon name="checkbox"></ion-icon></CheckContainer>
+        </HabitsContainer>
+    )
+}
+
 const PageContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -73,6 +149,12 @@ const PageContainer = styled.div`
 `
 const TrackIt = styled.svg`
     margin-left:18px;
+`
+const ActualSequence = styled.p`
+    color:${props => props.done ? "#8FC549" : "#666666"} ;
+`
+const HighestSequence = styled.p`
+    color: ${props => ((props.highestSequence === props.currentSequence) && (props.highestSequence > 0)) ? "#8FC549" : "#666666"};
 `
 
 const NavContainer = styled.div`
@@ -160,7 +242,7 @@ const CheckContainer = styled.div`
     position:absolute;
     right:13px;
     top:13px;
-    color:#EBEBEB;
+    color: ${props => props.isChecked ? "#8FC549" : "#EBEBEB"};
     font-size:69px;
 `
 const ProgressBarContainer = styled.div`

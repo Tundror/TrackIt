@@ -76,12 +76,29 @@ export default function HabitsPage() {
                     <AddHabitButton data-test="habit-create-btn" onClick={displayCreateHabit}>+</AddHabitButton>
                 </HabitsHeaderContainer>
                 {isCreatingHabit ? <AddHabitContainer data-test="habit-create-container">
-                    <InputLogin data-test="habit-name-input" onChange={handleInputChange} value={inputValue} type="text" placeholder="nome do hábito" />
+                    <InputLogin data-test="habit-name-input" 
+                    onChange={handleInputChange} 
+                    value={inputValue} 
+                    type="text" 
+                    placeholder="nome do hábito" />
                     <WeekdayContainer>
-                        {weekdays.map((a) => <DisplayWeekdays isDisabled={isDisabled} selectedDays={selectedDays} setSelectedDays={setSelectedDays} key={a} day={a} />)}
+                        {weekdays.map((a) => <DisplayWeekdays 
+                        isDisabled={isDisabled} 
+                        selectedDays={selectedDays} 
+                        setSelectedDays={setSelectedDays} 
+                        key={a} 
+                        day={a} />)}
                     </WeekdayContainer>
-                    <CancelButton isDisabled={isDisabled} disabled={isDisabled} data-test="habit-create-cancel-btn" onClick={cancelCreateHabit}>Cancelar</CancelButton>
-                    <SaveButton isDisabled={isDisabled} disabled={isDisabled} data-test="habit-create-save-btn" onClick={saveHabit}>{isDisabled ? <ThreeDots
+                    <CancelButton 
+                    isDisabled={isDisabled} 
+                    disabled={isDisabled} 
+                    data-test="habit-create-cancel-btn" 
+                    onClick={cancelCreateHabit}>Cancelar</CancelButton>
+                    <SaveButton isDisabled={isDisabled} 
+                    disabled={isDisabled} 
+                    data-test="habit-create-save-btn" 
+                    onClick={saveHabit}>{isDisabled ? 
+                    <ThreeDots
                         height="80"
                         width="80"
                         radius="9"
@@ -94,7 +111,17 @@ export default function HabitsPage() {
                 </AddHabitContainer>
                     :
                     <></>}
-                {listaHabitos.map((a) => <DisplayHabits token={token} listaHabitos={listaHabitos} setListaHabitos={setListaHabitos} days={a.days} id={a.id} name={a.name} key={a.id} weekdays={weekdays} selectedDays={selectedDays} setSelectedDays={setSelectedDays} />)}
+                {listaHabitos.map((a) => <DisplayHabits 
+                token={token} 
+                listaHabitos={listaHabitos} 
+                setListaHabitos={setListaHabitos} 
+                days={a.days} 
+                id={a.id} 
+                name={a.name} 
+                key={a.id} 
+                weekdays={weekdays} 
+                selectedDays={selectedDays} 
+                setSelectedDays={setSelectedDays} />)}
                 {listaHabitos.length > 0 ? <></> : <NoHabitsContainer>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</NoHabitsContainer>}
                 <BottomContainer>
                     <FooterContainer data-test="menu">
@@ -186,7 +213,11 @@ function DisplayHabits(props) {
         <HabitsContainer data-test="habit-container">
             <HabitName data-test="habit-name">{props.name}</HabitName>
             <WeekdayContainer>
-                {props.weekdays.map((a) => <DisplayWeekdaysStatic selectedDays={props.selectedDays} days={props.days} setSelectedDays={props.setSelectedDays} key={a} day={a} />)}
+                {props.weekdays.map((a) => <DisplayWeekdaysStatic 
+                selectedDays={props.selectedDays} 
+                days={props.days} 
+                setSelectedDays={props.setSelectedDays} 
+                key={a} day={a} />)}
             </WeekdayContainer>
             <TrashContainer data-test="habit-delete-btn" onClick={removeHabit}><ion-icon size="small" name="trash-outline"></ion-icon></TrashContainer>
         </HabitsContainer>
