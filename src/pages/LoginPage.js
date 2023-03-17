@@ -3,12 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext, createContext } from "react"
 import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner'
+import { UserContext } from "../contexts/userContext";
 
 export default function LoginPage() {
     const navigate = useNavigate()
     const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
     const [form, setForm] = useState({ email: "", password: "" })
     const [isDisabled, setIsDisabled] = useState(false)
+    const {token, setToken, setUserImage} = useContext(UserContext)
     function handleChange(event) {
         setForm({ ...form, [event.target.name]: event.target.value })
         console.log(form)
@@ -20,12 +22,16 @@ export default function LoginPage() {
         promise.then((a) => {
             navigate("/hoje")
             setIsDisabled(false)
-            console.log(a.data)
+            setToken(a.data.token)
+            setUserImage(a.data.image)
+
+            console.log("objeto login",a.data)
         })
         promise.catch((a) => {
             alert(a.response.data.message)
             setIsDisabled(false)
         })
+        console.log("token",token)
     }
     return (
         <PageContainer>
@@ -39,9 +45,9 @@ export default function LoginPage() {
             </svg>
             <form onSubmit={signUp}>
                 <FormContainer>
-                    <InputLogin disabled={isDisabled} type="text" placeholder="email" name={"email"} value={form.email} required onChange={handleChange} />
-                    <InputLogin disabled={isDisabled} type="text" placeholder="senha" name={"password"} value={form.password} required onChange={handleChange} />
-                    <LoginButton isDisabled={isDisabled} disabled={isDisabled} type="submit" >{isDisabled ? <ThreeDots
+                    <InputLogin data-test="email-input" disabled={isDisabled} type="text" placeholder="email" name={"email"} value={form.email} required onChange={handleChange} />
+                    <InputLogin data-test="password-input" disabled={isDisabled} type="text" placeholder="senha" name={"password"} value={form.password} required onChange={handleChange} />
+                    <LoginButton data-test="login-btn" isDisabled={isDisabled} disabled={isDisabled} type="submit" >{isDisabled ? <ThreeDots
                         height="80"
                         width="80"
                         radius="9"
@@ -53,7 +59,7 @@ export default function LoginPage() {
                     /> : "Entrar"}</LoginButton>
                 </FormContainer>
             </form>
-            <Link to="/cadastro" ><Cadastrar>Não tem uma conta? Cadastre-se!</Cadastrar></Link>
+            <Link data-test="signup-link" to="/cadastro" ><Cadastrar>Não tem uma conta? Cadastre-se!</Cadastrar></Link>
         </PageContainer>
     )
 }
