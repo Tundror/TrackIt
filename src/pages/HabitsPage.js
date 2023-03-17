@@ -17,9 +17,9 @@ export default function HabitsPage() {
     const { token, userImage } = useContext(UserContext)
     const weekdays = [0, 1, 2, 3, 4, 5, 6]
     const [selectedDays, setSelectedDays] = useState([])
-    const [form, setForm] = useState("")
     const [listaHabitos, setListaHabitos] = useState([])
     const [isDisabled, setisDisabled] = useState(false)
+    const [inputValue, setInputValue] = useState('');
 
     useEffect(() => {
         const config = {
@@ -37,29 +37,30 @@ export default function HabitsPage() {
         console.log(selectedDays)
         setSelectedDays([])
     }
-    function chooseName(event) {
-        setForm(event.target.value)
-    }
     function saveHabit() {
+        setisDisabled(true)
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         }
-        const newForm = { name: form, days: selectedDays }
         console.log("config", config)
+        const newForm = { name: inputValue, days: selectedDays }
         const promise = axios.post(url, newForm, config)
-        setisDisabled(true)
         promise.then((a) => {
             console.log(a.data)
-            setisDisabled(false)
             const promise2 = axios.get(url, config)
             promise2.then((a) => setListaHabitos(a.data))
             promise2.catch((a) => alert("erro", a.response.data.message))
+            setisDisabled(false)
             setIsCreatingHabit(false)
+            setInputValue("")
         })
         promise.catch((a) => {
             setisDisabled(false)
             console.log(a.response.data)
         })   
+    }
+    function handleInputChange(event){
+        setInputValue(event.target.value)
     }
     return (
         <>
@@ -75,7 +76,7 @@ export default function HabitsPage() {
                     <AddHabitButton data-test="habit-create-btn" onClick={displayCreateHabit}>+</AddHabitButton>
                 </HabitsHeaderContainer>
                 {isCreatingHabit ? <AddHabitContainer data-test="habit-create-container">
-                    <InputLogin data-test="habit-name-input" onChange={chooseName} type="text" placeholder="nome do hábito" />
+                    <InputLogin data-test="habit-name-input" onChange={handleInputChange} value={inputValue} type="text" placeholder="nome do hábito" />
                     <WeekdayContainer>
                         {weekdays.map((a) => <DisplayWeekdays isDisabled={isDisabled} selectedDays={selectedDays} setSelectedDays={setSelectedDays} key={a} day={a} />)}
                     </WeekdayContainer>
