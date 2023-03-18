@@ -39,7 +39,7 @@ export default function SignUpPage() {
             <form onSubmit={signUp}>
                 <FormContainer>
                     <InputLogin data-test="email-input" disabled={isDisabled} type="text" placeholder="email" name={"email"} value={form.email} required onChange={handleChange} />
-                    <InputLogin data-test="password-input" disabled={isDisabled} type="text" placeholder="password" name={"password"} value={form.password} required onChange={handleChange} />
+                    <InputLogin data-test="password-input" disabled={isDisabled} type="password" placeholder="password" name={"password"} value={form.password} required onChange={handleChange} />
                     <InputLogin data-test="user-name-input" disabled={isDisabled} type="text" placeholder="nome" name={"name"} value={form.name} required onChange={handleChange} />
                     <InputLogin data-test="user-image-input" disabled={isDisabled} type="text" placeholder="foto" name={"image"} value={form.image} required onChange={handleChange} />
                     <LoginButton data-test="signup-btn" isDisabled={isDisabled} disabled={isDisabled} type="submit" >{isDisabled ? <ThreeDots

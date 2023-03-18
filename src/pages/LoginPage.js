@@ -46,7 +46,7 @@ export default function LoginPage() {
             <form onSubmit={signUp}>
                 <FormContainer>
                     <InputLogin data-test="email-input" disabled={isDisabled} type="text" placeholder="email" name={"email"} value={form.email} required onChange={handleChange} />
-                    <InputLogin data-test="password-input" disabled={isDisabled} type="text" placeholder="senha" name={"password"} value={form.password} required onChange={handleChange} />
+                    <InputLogin data-test="password-input" disabled={isDisabled} type="password" placeholder="senha" name={"password"} value={form.password} required onChange={handleChange} />
                     <LoginButton data-test="login-btn" isDisabled={isDisabled} disabled={isDisabled} type="submit" >{isDisabled ? <ThreeDots
                         height="80"
                         width="80"

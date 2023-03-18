@@ -8,11 +8,11 @@ import { UserContext } from "../contexts/userContext";
 import dayjs from "dayjs";
 
 export default function TodayPage() {
-    const percentage = 66
     const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
     const [listaHabitos, setListaHabitos] = useState([])
 
-    const { token, userImage } = useContext(UserContext)
+    const { token, userImage, percentage, setPercentage } = useContext(UserContext)
+    const [habitsConcludedToday, setHabitsConcludedToday] = useState(0)
 
     function whatDayWeek() {
         switch (dayjs().day()) {
@@ -26,14 +26,19 @@ export default function TodayPage() {
         }
     }
     useEffect(() => {
+
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         }
         axios
             .get(url, config)
-            .then((a) => setListaHabitos(a.data))
+            .then((a) => { setListaHabitos(a.data) })
             .catch((a) => console.log(a.response.data.message))
+
     }, [])
+    useEffect(() => {
+
+    }, [habitsConcludedToday])
     return (
         <>
             <PageContainer>
@@ -51,13 +56,16 @@ export default function TodayPage() {
                 </HabitsHeaderContainer>
                 {listaHabitos.map((a) => <DisplayHabits
                     key={a.id}
+                    habitsConcludedToday={habitsConcludedToday}
+                    setHabitsConcludedToday={setHabitsConcludedToday}
                     id={a.id}
                     name={a.name}
                     done={a.done}
                     currentSequence={a.currentSequence}
                     highestSequence={a.highestSequence}
                     token={token}
-                    setListaHabitos={setListaHabitos} />)}
+                    setListaHabitos={setListaHabitos}
+                    listaHabitos={listaHabitos} />)}
                 <BottomContainer>
                     <FooterContainer data-test="menu">
                         <Link data-test="habit-link" to="/habitos" ><Habitos>Hábitos</Habitos></Link>
@@ -84,38 +92,56 @@ export default function TodayPage() {
 }
 
 function DisplayHabits(props) {
-    const [isChecked, setIsChecked] = useState(false)
+    const [isChecked, setIsChecked] = useState(props.done)
+    useEffect(() => {
+        if (props.done === true) {
+            let x = props.habitsConcludedToday + 1
+            props.setHabitsConcludedToday(x)
+            console.log("useEffect",x)
+        }
+    }, [])
     function checkHabit() {
         const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
         const urlCheck = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${props.id}/check`
         const urlUncheck = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${props.id}/uncheck`
+        const emptyBody = {}
         const config = {
             headers: { Authorization: `Bearer ${props.token}` }
         }
-        if (props.done === true) {
-            
+        if (props.done === false) {
+            let x=0
             axios
-                .post(urlCheck, config)
+                .post(urlCheck, emptyBody, config)
                 .then(() => {
                     setIsChecked(true)
+                    x=props.habitsConcludedToday + 1
+                    props.setHabitsConcludedToday(x)
                     axios
                         .get(url, config)
                         .then((a) => props.setListaHabitos(a.data))
                         .catch((a) => console.log(a.response.data.message))
+                    const habitsPercentage = (x / props.listaHabitos.length) * 100
+                    console.log("porcentagem", habitsPercentage)
+                    console.log("habitsConcludedToday",props.habitsConcludedToday)
                 })
                 .catch((a) => alert(a.response.data.message))
         }
         else {
-            
-            
+            let x=0
             axios
-                .post(urlUncheck, config)
+                .post(urlUncheck, emptyBody, config)
                 .then(() => {
+                    x=props.habitsConcludedToday - 1
                     setIsChecked(false)
+                    props.setHabitsConcludedToday(x)
                     axios
                         .get(url, config)
                         .then((a) => props.setListaHabitos(a.data))
                         .catch((a) => console.log(a.response.data.message))
+                    const habitsPercentage = (x / props.listaHabitos.length) * 100
+                    console.log("porcentagem", habitsPercentage)
+                    console.log("habitsConcludedToday",props.habitsConcludedToday)
+                    console.log("props.listaHabitos.length",props.listaHabitos.length)
                 })
                 .catch((a) => alert(a.response.data.message))
         }

@@ -11,10 +11,9 @@ import 'react-confirm-alert/src/react-confirm-alert.css'
 import { ThreeDots } from 'react-loader-spinner'
 
 export default function HabitsPage() {
-    const percentage = 66
     const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
     const [isCreatingHabit, setIsCreatingHabit] = useState(false)
-    const { token, userImage } = useContext(UserContext)
+    const { token, userImage, percentage, setPercentage } = useContext(UserContext)
     const weekdays = [0, 1, 2, 3, 4, 5, 6]
     const [selectedDays, setSelectedDays] = useState([])
     const [listaHabitos, setListaHabitos] = useState([])
