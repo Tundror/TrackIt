@@ -53,7 +53,7 @@ export default function TodayPage() {
                     <MeusHabitos data-test="today">
                         {whatDayWeek()}, {dayjs().date()}/{(dayjs().month() + 1) < 10 ? "0" : ""}{dayjs().month() + 1}
                     </MeusHabitos>
-                    <HabitsConcluded data-test="today-counter">Nenhum hábito concluído ainda</HabitsConcluded>
+                    <HabitsConcluded data-test="today-counter" habitsConcludedToday={habitsConcludedToday} >{habitsConcludedToday > 0 ? `${percentage.toFixed(0)}% dos hábitos concluídos` : "Nenhum hábito concluído ainda"}</HabitsConcluded>
                 </HabitsHeaderContainer>
                 {listaHabitos.map((a) => <DisplayHabits
                     key={a.id}
@@ -221,7 +221,7 @@ const HabitsConcluded = styled.p`
     font-weight: 400;
     font-size: 17.976px;
     line-height: 22px;
-    color: #BABABA;
+    color: ${props => props.habitsConcludedToday > 0 ? "#8FC549" : "#BABABA"};
     margin-left:18px;
 `
 const HabitsContainer = styled.div`
