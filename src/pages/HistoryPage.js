@@ -7,7 +7,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import { UserContext } from "../contexts/userContext";
 
 export default function HistoryPage() {
-    const { token, userImage, percentage, setPercentage } = useContext(UserContext)
+    const { token, userImage, percentage} = useContext(UserContext)
     return (
         <>
             <PageContainer>
