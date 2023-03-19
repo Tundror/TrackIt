@@ -44,19 +44,26 @@ export default function HabitsPage() {
         console.log("config", config)
         const newForm = { name: inputValue, days: selectedDays }
         const promise = axios.post(url, newForm, config)
-        promise.then((a) => {
-            console.log(a.data)
-            const promise2 = axios.get(url, config)
-            promise2.then((a) => setListaHabitos(a.data))
-            promise2.catch((a) => alert("erro", a.response.data.message))
+        if (inputValue !== "") {
+            promise.then((a) => {
+                console.log(a.data)
+                const promise2 = axios.get(url, config)
+                promise2.then((a) => setListaHabitos(a.data))
+                promise2.catch((a) => alert("erro", a.response.data.message))
+                setisDisabled(false)
+                setIsCreatingHabit(false)
+                setInputValue("")
+            })
+            promise.catch((a) => {
+                setisDisabled(false)
+                console.log(a.response.data)
+            })
+        }
+        else{
+            alert("Preencha o nome do hábito!")
             setisDisabled(false)
-            setIsCreatingHabit(false)
-            setInputValue("")
-        })
-        promise.catch((a) => {
-            setisDisabled(false)
-            console.log(a.response.data)
-        })
+        }
+
     }
     function handleInputChange(event) {
         setInputValue(event.target.value)
@@ -195,7 +202,7 @@ function DisplayHabits(props) {
             promise.catch((a) => alert("erro", a.response.data.message))
 
         }
-        
+
 
     }
     return (
