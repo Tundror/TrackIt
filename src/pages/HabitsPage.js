@@ -86,6 +86,7 @@ export default function HabitsPage() {
                         onChange={handleInputChange}
                         value={inputValue}
                         type="text"
+                        disabled={isDisabled}
                         placeholder="nome do hábito" />
                     <WeekdayContainer>
                         {weekdays.map((a) => <DisplayWeekdays
