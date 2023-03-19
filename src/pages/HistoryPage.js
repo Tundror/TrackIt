@@ -24,8 +24,8 @@ export default function HistoryPage() {
                 <BottomContainer>
                     <FooterContainer data-test="menu">
                         <Link data-test="habit-link" to="/habitos" ><Habitos>Hábitos</Habitos></Link>
-                        <ProgressBarContainer>
-                            <Link data-test="today-link" to="/hoje"><CircularProgressbar
+                        <Link data-test="today-link" to="/hoje"> <ProgressBarContainer>
+                            <CircularProgressbar
                                 value={percentage}
                                 text="Hoje"
                                 background
@@ -36,8 +36,8 @@ export default function HistoryPage() {
                                     pathColor: "#fff",
                                     trailColor: "transparent"
                                 })}
-                            /></Link>
-                        </ProgressBarContainer>
+                            />
+                        </ProgressBarContainer></Link>
                         <Historico>Histórico</Historico>
                     </FooterContainer>
                 </BottomContainer>

@@ -13,7 +13,7 @@ import { ThreeDots } from 'react-loader-spinner'
 export default function HabitsPage() {
     const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
     const [isCreatingHabit, setIsCreatingHabit] = useState(false)
-    const { token, userImage, percentage} = useContext(UserContext)
+    const { token, userImage, percentage } = useContext(UserContext)
     const weekdays = [0, 1, 2, 3, 4, 5, 6]
     const [selectedDays, setSelectedDays] = useState([])
     const [listaHabitos, setListaHabitos] = useState([])
@@ -75,58 +75,58 @@ export default function HabitsPage() {
                     <AddHabitButton data-test="habit-create-btn" onClick={displayCreateHabit}>+</AddHabitButton>
                 </HabitsHeaderContainer>
                 {isCreatingHabit ? <AddHabitContainer data-test="habit-create-container">
-                    <InputLogin data-test="habit-name-input" 
-                    onChange={handleInputChange} 
-                    value={inputValue} 
-                    type="text" 
-                    placeholder="nome do hábito" />
+                    <InputLogin data-test="habit-name-input"
+                        onChange={handleInputChange}
+                        value={inputValue}
+                        type="text"
+                        placeholder="nome do hábito" />
                     <WeekdayContainer>
-                        {weekdays.map((a) => <DisplayWeekdays 
-                        isDisabled={isDisabled} 
-                        selectedDays={selectedDays} 
-                        setSelectedDays={setSelectedDays} 
-                        key={a} 
-                        day={a} />)}
+                        {weekdays.map((a) => <DisplayWeekdays
+                            isDisabled={isDisabled}
+                            selectedDays={selectedDays}
+                            setSelectedDays={setSelectedDays}
+                            key={a}
+                            day={a} />)}
                     </WeekdayContainer>
-                    <CancelButton 
-                    isDisabled={isDisabled} 
-                    disabled={isDisabled} 
-                    data-test="habit-create-cancel-btn" 
-                    onClick={cancelCreateHabit}>Cancelar</CancelButton>
-                    <SaveButton isDisabled={isDisabled} 
-                    disabled={isDisabled} 
-                    data-test="habit-create-save-btn" 
-                    onClick={saveHabit}>{isDisabled ? 
-                    <ThreeDots
-                        height="80"
-                        width="80"
-                        radius="9"
-                        color='white'
-                        ariaLabel='three-dots-loading'
-                        wrapperStyle={{}}
-                        wrapperClassName=""
-                        visible={true}
-                    /> : "Salvar"}</SaveButton>
+                    <CancelButton
+                        isDisabled={isDisabled}
+                        disabled={isDisabled}
+                        data-test="habit-create-cancel-btn"
+                        onClick={cancelCreateHabit}>Cancelar</CancelButton>
+                    <SaveButton isDisabled={isDisabled}
+                        disabled={isDisabled}
+                        data-test="habit-create-save-btn"
+                        onClick={saveHabit}>{isDisabled ?
+                            <ThreeDots
+                                height="80"
+                                width="80"
+                                radius="9"
+                                color='white'
+                                ariaLabel='three-dots-loading'
+                                wrapperStyle={{}}
+                                wrapperClassName=""
+                                visible={true}
+                            /> : "Salvar"}</SaveButton>
                 </AddHabitContainer>
                     :
                     <></>}
-                {listaHabitos.map((a) => <DisplayHabits 
-                token={token} 
-                listaHabitos={listaHabitos} 
-                setListaHabitos={setListaHabitos} 
-                days={a.days} 
-                id={a.id} 
-                name={a.name} 
-                key={a.id} 
-                weekdays={weekdays} 
-                selectedDays={selectedDays} 
-                setSelectedDays={setSelectedDays} />)}
+                {listaHabitos.map((a) => <DisplayHabits
+                    token={token}
+                    listaHabitos={listaHabitos}
+                    setListaHabitos={setListaHabitos}
+                    days={a.days}
+                    id={a.id}
+                    name={a.name}
+                    key={a.id}
+                    weekdays={weekdays}
+                    selectedDays={selectedDays}
+                    setSelectedDays={setSelectedDays} />)}
                 {listaHabitos.length > 0 ? <></> : <NoHabitsContainer>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</NoHabitsContainer>}
                 <BottomContainer>
                     <FooterContainer data-test="menu">
                         <Habitos>Hábitos</Habitos>
-                        <ProgressBarContainer>
-                            <Link data-test="today-link" to="/hoje"><CircularProgressbar
+                        <Link data-test="today-link" to="/hoje"><ProgressBarContainer>
+                            <CircularProgressbar
                                 value={percentage}
                                 text="Hoje"
                                 background
@@ -137,8 +137,8 @@ export default function HabitsPage() {
                                     pathColor: "#fff",
                                     trailColor: "transparent"
                                 })}
-                            /></Link>
-                        </ProgressBarContainer>
+                            />
+                        </ProgressBarContainer></Link>
                         <Link data-test="history-link" to="/historico" ><Historico>Histórico</Historico></Link>
                     </FooterContainer>
                 </BottomContainer>
@@ -179,51 +179,40 @@ function DisplayWeekdays(props) {
 }
 function DisplayHabits(props) {
     function removeHabit() {
-        confirmAlert({
-            title: 'Confirm to submit',
-            message: 'Tem certeza que deseja excluir este habito?',
-            buttons: [
-                {
-                    label: 'Sim',
-                    onClick: () => {
-                        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
-                        const array = props.listaHabitos
-                        const config = {
-                            headers: { Authorization: `Bearer ${props.token}` }
-                        }
-                        const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${props.id}`, config)
-                        promise.then(() => {
-                            const promise2 = axios.get(url, config)
-                            promise2.then((a) => props.setListaHabitos(a.data))
-                            promise2.catch((a) => alert("erro", a.response.data.message))
-                        })
-                        promise.catch((a) => alert("erro", a.response.data.message))
+        const select = window.confirm("Tem certeza que deseja excluir este habito?")
+        if (select === true) {
+            const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+            const array = props.listaHabitos
+            const config = {
+                headers: { Authorization: `Bearer ${props.token}` }
+            }
+            const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${props.id}`, config)
+            promise.then(() => {
+                const promise2 = axios.get(url, config)
+                promise2.then((a) => props.setListaHabitos(a.data))
+                promise2.catch((a) => alert("erro", a.response.data.message))
+            })
+            promise.catch((a) => alert("erro", a.response.data.message))
 
-                    }
-                },
-                {
-                    label: 'Nao',
-                }
-            ]
-        });
+        }
+        
 
     }
     return (
         <HabitsContainer data-test="habit-container">
             <HabitName data-test="habit-name">{props.name}</HabitName>
             <WeekdayContainer>
-                {props.weekdays.map((a) => <DisplayWeekdaysStatic 
-                selectedDays={props.selectedDays} 
-                days={props.days} 
-                setSelectedDays={props.setSelectedDays} 
-                key={a} day={a} />)}
+                {props.weekdays.map((a) => <DisplayWeekdaysStatic
+                    selectedDays={props.selectedDays}
+                    days={props.days}
+                    setSelectedDays={props.setSelectedDays}
+                    key={a} day={a} />)}
             </WeekdayContainer>
             <TrashContainer data-test="habit-delete-btn" onClick={removeHabit}><ion-icon size="small" name="trash-outline"></ion-icon></TrashContainer>
         </HabitsContainer>
     )
 }
 function DisplayWeekdaysStatic(props) {
-    const [isSelected, setIsSelected] = useState(false)
 
     function decideDay() {
         switch (props.day) {
