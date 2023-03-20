@@ -59,7 +59,7 @@ export default function HabitsPage() {
                 console.log(a.response.data)
             })
         }
-        else{
+        else {
             alert("Preencha o nome do hábito!")
             setisDisabled(false)
         }
@@ -133,20 +133,22 @@ export default function HabitsPage() {
                 <BottomContainer>
                     <FooterContainer data-test="menu">
                         <Habitos>Hábitos</Habitos>
-                        <Link data-test="today-link" to="/hoje"><ProgressBarContainer>
-                            <CircularProgressbar
-                                value={percentage}
-                                text="Hoje"
-                                background
-                                backgroundPadding={6}
-                                styles={buildStyles({
-                                    backgroundColor: "#52B6FF",
-                                    textColor: "#fff",
-                                    pathColor: "#fff",
-                                    trailColor: "transparent"
-                                })}
-                            />
-                        </ProgressBarContainer></Link>
+                        <ProgressBarContainer>
+                            <Link data-test="today-link" to="/hoje">
+                                <CircularProgressbar
+                                    value={percentage}
+                                    text="Hoje"
+                                    background
+                                    backgroundPadding={6}
+                                    styles={buildStyles({
+                                        backgroundColor: "#52B6FF",
+                                        textColor: "#fff",
+                                        pathColor: "#fff",
+                                        trailColor: "transparent"
+                                    })}
+                                />
+                            </Link>
+                        </ProgressBarContainer>
                         <Link data-test="history-link" to="/historico" ><Historico>Histórico</Historico></Link>
                     </FooterContainer>
                 </BottomContainer>

@@ -7,7 +7,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import { UserContext } from "../contexts/userContext";
 
 export default function HistoryPage() {
-    const { token, userImage, percentage} = useContext(UserContext)
+    const { token, userImage, percentage } = useContext(UserContext)
     return (
         <>
             <PageContainer>
@@ -24,20 +24,22 @@ export default function HistoryPage() {
                 <BottomContainer>
                     <FooterContainer data-test="menu">
                         <Link data-test="habit-link" to="/habitos" ><Habitos>Hábitos</Habitos></Link>
-                        <Link data-test="today-link" to="/hoje"> <ProgressBarContainer>
-                            <CircularProgressbar
-                                value={percentage}
-                                text="Hoje"
-                                background
-                                backgroundPadding={6}
-                                styles={buildStyles({
-                                    backgroundColor: "#52B6FF",
-                                    textColor: "#fff",
-                                    pathColor: "#fff",
-                                    trailColor: "transparent"
-                                })}
-                            />
-                        </ProgressBarContainer></Link>
+                        <ProgressBarContainer>
+                            <Link data-test="today-link" to="/hoje">
+                                <CircularProgressbar
+                                    value={percentage}
+                                    text="Hoje"
+                                    background
+                                    backgroundPadding={6}
+                                    styles={buildStyles({
+                                        backgroundColor: "#52B6FF",
+                                        textColor: "#fff",
+                                        pathColor: "#fff",
+                                        trailColor: "transparent"
+                                    })}
+                                />
+                            </Link>
+                        </ProgressBarContainer>
                         <Historico>Histórico</Historico>
                     </FooterContainer>
                 </BottomContainer>
