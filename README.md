@@ -2,6 +2,13 @@
 
 This is a mobile-focused web page that tracks the user's habits. First, you need to create an account and then log in. Then, you can start by adding your habits at the Habits page. Lastly, you can see all your habits marked for this day of the week at the Today page, and check them when you are done.
 
+## About
+
+- Track your habits daily
+- Login system
+- Add habits feature
+- Check your habits when done
+
 ## Installing / Getting started
 
 ### Deploy
