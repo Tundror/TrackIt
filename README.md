@@ -6,7 +6,7 @@ This is a mobile-focused web page that tracks the user's habits. First, you need
 
 ### Deploy
 
-- You can use the deploy link to access the application: [Deploy Link](projeto11-trackit-six-eta.vercel.app)
+- You can use the deploy link to access the application: [Deploy Link](https://projeto11-trackit-six-eta.vercel.app/)
 
 ### Running locally
 
