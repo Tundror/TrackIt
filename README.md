@@ -9,6 +9,15 @@ This is a mobile-focused web page that tracks the user's habits. First, you need
 - Add habits feature
 - Check your habits when done
 
+<details>
+  <summary>Pictures</summary>
+  <br>
+  <img src="https://github.com/Tundror/TrackIt/assets/89937349/4b72c53b-f753-4b0d-92e0-ee7cb53f0295" alt="Image 1">
+  <img src="https://github.com/Tundror/TrackIt/assets/89937349/ea7b3a3d-7876-4a6a-986b-61a481dc4aec" alt="Image 2">
+  <img src="https://github.com/Tundror/TrackIt/assets/89937349/80bb196e-b598-4a04-866a-3abb01344bf9" alt="Image 3">
+  <img src="https://github.com/Tundror/TrackIt/assets/89937349/c74f9aec-007f-4168-8ef9-74492e013129" alt="Image 4">
+</details>
+
 ## Installing / Getting started
 
 ### Deploy
